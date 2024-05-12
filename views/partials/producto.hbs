@@ -1,0 +1,75 @@
+<div class="row">
+  {{#each productos}}
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <img
+          src="/{{this}}.png"
+          class="card-img-top"
+          alt="{{this}}"
+          style="max-width: 100%; height: auto;"
+        />
+        <div class="card-body">
+          <h5 class="card-title">{{this}}</h5>
+          <p class="card-text">Descripción del producto.</p>
+          <button
+            class="btn btn-primary"
+            onclick="seleccionarProducto('{{this}}')"
+          >Seleccionar</button>
+        </div>
+      </div>
+    </div>
+  {{/each}}
+</div>
+
+<button class="btn btn-primary" onclick="mostrarSeleccion()">Ver Selección</button>
+
+<div class="modal fade" id="seleccionModal" tabindex="-1" role="dialog" aria-labelledby="seleccionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="seleccionModalLabel">Selección de Productos</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" onclick="borrarSeleccion()">Borrar Selección</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let seleccionados = [];
+
+  function seleccionarProducto(nombre) {
+    seleccionados.push(nombre);
+    event.target.classList.add('btn-success');
+  }
+
+  function mostrarSeleccion() {
+    document.getElementById('modalBody').innerHTML = '';
+    seleccionados.forEach(nombre => {
+      const img = document.createElement('img');
+      img.src = '/' + nombre + '.png';
+      img.alt = nombre;
+      img.style.maxWidth = '100%';
+      img.style.height = 'auto';
+      document.getElementById('modalBody').appendChild(img);
+    });
+    $('#seleccionModal').modal('show');
+  }
+
+  function borrarSeleccion() {
+    seleccionados = [];
+    document.querySelectorAll('.btn-primary').forEach(button => {
+      button.classList.remove('btn-success');
+    });
+    $('#seleccionModal').modal('hide');
+  }
+</script>
+
